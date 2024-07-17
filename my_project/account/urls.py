@@ -19,7 +19,12 @@ urlpatterns = [
     path('update-address/<int:pk>/', views.UpdateUserAddressView.as_view(), name="update-address-details"),
     path('delete-address/<int:pk>/', views.DeleteUserAddressView.as_view(), name="delete-address"),
 
-    
+    # order
+    path('all-orders-list/', views.OrdersListView.as_view(), name="all-orders-list"),
+    path('change-order-status/<int:pk>/', views.ChangeOrderStatus.as_view(), name="change-order-status"),
+
+    # pay
+    path('stripe-cards/', views.CardsListView.as_view(), name="Pay-cards-list-page"),
 ]
 
     
