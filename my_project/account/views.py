@@ -133,3 +133,26 @@ class UserAddressDetailsView(APIView):
         user_address = BillingAddress.objects.get(id=pk)
         serializer = BillingAddressSerializer(user_address, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CreateUserAddressView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        new_address = {
+            "name": request.data["name"],
+            "user": request.user.id,
+            "phone_number": request.data["phone_number"],
+            "pin_code": request.data["pin_code"],
+            "house_no": request.data["house_no"],
+            "landmark": request.data["landmark"],
+            "city": request.data["city"],
+            "state": request.data["state"],
+        }
+
+        serializer = BillingAddressSerializer(data=new_address, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
