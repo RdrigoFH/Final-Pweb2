@@ -120,3 +120,10 @@ class UserAccountDeleteView(APIView):
                 return Response({"details": "Permission Denied."}, status=status.HTTP_403_FORBIDDEN)
         except:
             return Response({"details": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class UserAddressesListView(APIView):
+    def get(self, request):
+        user = request.user
+        user_address = BillingAddress.objects.filter(user=user)
+        serializer = BillingAddressSerializer(user_address, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
