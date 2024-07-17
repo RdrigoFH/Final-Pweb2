@@ -6,6 +6,13 @@ class ProductView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ProductDetailView(APIView):
+
+    def get(self, request, pk):
+        product = Product.objects.get(id=pk)
+        serializer = ProductSerializer(product, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 
