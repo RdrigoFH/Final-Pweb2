@@ -58,3 +58,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+class CardsListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        stripeCards = StripeModel.objects.filter(user=request.user)
+        serializer = CardsListSerializer(stripeCards, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
