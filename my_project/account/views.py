@@ -127,3 +127,9 @@ class UserAddressesListView(APIView):
         user_address = BillingAddress.objects.filter(user=user)
         serializer = BillingAddressSerializer(user_address, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UserAddressDetailsView(APIView):
+    def get(self, request, pk):
+        user_address = BillingAddress.objects.get(id=pk)
+        serializer = BillingAddressSerializer(user_address, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
