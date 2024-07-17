@@ -47,3 +47,14 @@ class UserRegisterView(APIView):
                 )
                 serializer = UserRegisterTokenSerializer(user, many=False)
                 return Response(serializer.data)
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        serializer = UserRegisterTokenSerializer(self.user).data
+        for k, v in serializer.items():
+            data[k] = v
+        return data
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
