@@ -11,5 +11,15 @@ urlpatterns = [
     path('user/<int:pk>/', views.UserAccountDetailsView.as_view(), name="user-details"),
     path('user_update/<int:pk>/', views.UserAccountUpdateView.as_view(), name="user-update"),
     path('user_delete/<int:pk>/', views.UserAccountDeleteView.as_view(), name="user-delete"),
+
+    # user address
+    path('all-address-details/', views.UserAddressesListView.as_view(), name="all-address-details"),
+    path('address-details/<int:pk>/', views.UserAddressDetailsView.as_view(), name="address-details"),
+    path('create-address/', views.CreateUserAddressView.as_view(), name="create-address"),
+    path('update-address/<int:pk>/', views.UpdateUserAddressView.as_view(), name="update-address-details"),
+    path('delete-address/<int:pk>/', views.DeleteUserAddressView.as_view(), name="delete-address"),
+
+    
 ]
+
     
