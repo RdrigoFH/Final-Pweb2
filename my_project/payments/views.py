@@ -6,3 +6,14 @@ from account.models import StripeModel, OrderModel
 from datetime import datetime
 
 stripe.api_key="your secret key here"
+
+def save_card_in_db(cardData, email, cardId, customer_id, user):
+    StripeModel.objects.create(
+        email=email,
+        customer_id=customer_id,
+        card_number=cardData["number"],
+        exp_month=cardData["exp_month"],
+        exp_year=cardData["exp_year"],
+        card_id=cardId,
+        user=user,
+    )
