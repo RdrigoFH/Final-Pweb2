@@ -31,3 +31,8 @@ class CardsListSerializer(serializers.ModelSerializer):
         model = PayModel
         fields = "__all__"
 
+class BillingAddressSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BillingAddress
+        fields = "__all__"
