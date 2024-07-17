@@ -1,3 +1,12 @@
-from django.shortcuts import render
+class ProductView(APIView):
 
-# Create your views here.
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
