@@ -23,7 +23,8 @@ urlpatterns = [
     path('all-orders-list/', views.OrdersListView.as_view(), name="all-orders-list"),
     path('change-order-status/<int:pk>/', views.ChangeOrderStatus.as_view(), name="change-order-status"),
 
-    
+    # pay
+    path('stripe-cards/', views.CardsListView.as_view(), name="Pay-cards-list-page"),
 ]
 
     
