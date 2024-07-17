@@ -66,3 +66,14 @@ class CardsListView(APIView):
         stripeCards = StripeModel.objects.filter(user=request.user)
         serializer = CardsListSerializer(stripeCards, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UserAccountDetailsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+            serializer = UserSerializer(user, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({"details": "User not found"}, status=status.HTTP_404_NOT_FOUND)
