@@ -196,3 +196,45 @@ class RetrieveCardView(APIView):
             request.headers["Card-Id"]
         )
         return Response(card_details, status=status.HTTP_200_OK)
+    
+class CardUpdateView(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        update_card = stripe.Customer.modify_source(
+            data["customer_id"],
+            data["card_id"],
+            exp_month = data["exp_month"] if data["exp_month"] else None,
+            exp_year = data["exp_year"] if data["exp_year"] else None,
+            name = data["name_on_card"] if data["name_on_card"] else None,
+            address_city = data["address_city"] if data["address_city"] else None,
+            address_country = data["address_country"] if data["address_country"] else None,
+            address_state = data["address_state"] if data["address_state"] else None,
+            address_zip = data["address_zip"] if data["address_zip"] else None,
+
+        )
+
+        # localizar objeto en la base de datos Django
+        obj = StripeModel.objects.get(card_number=request.data["card_number"])
+        
+        # actualizando el objeto en la base de datos de Djanjo
+        if obj:
+            obj.name_on_card = data["name_on_card"] if data["name_on_card"] else obj.name_on_card
+            obj.exp_month = data["exp_month"] if data["exp_month"] else obj.exp_month
+            obj.exp_year = data["exp_year"] if data["exp_year"] else obj.exp_year
+            obj.address_city = data["address_city"] if data["address_city"] else obj.address_city
+            obj.address_country = data["address_country"] if data["address_country"] else obj.address_country
+            obj.address_state = data["address_state"] if data["address_state"] else obj.address_state
+            obj.address_zip = data["address_zip"] if data["address_zip"] else obj.address_zip
+            obj.save()
+        else:
+            pass
+
+        return Response(
+            {
+                "detail": "card updated successfully",
+                "data": { "Updated Card": update_card },
+
+            }, status=status.HTTP_200_OK)
