@@ -135,3 +135,53 @@ class CreateCardTokenView(APIView):
                     return Response(mensaje, status=status.HTTP_200_OK)
                 except:
                     return Response({ "detail": "Error de red, por favor verifique su conexión a Internet."})
+
+class ChargeCustomerView(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            data = request.data
+            email = request.data["email"]
+            datos_cliente = stripe.Customer.list(email=email).data
+            cliente = datos_cliente[0]
+
+            datos_cliente = stripe.Customer.list(email=request.data["email"]).data
+
+            # realizar el pago con Stripe (cobrar al cliente)
+            stripe.Charge.create(
+                customer=datos_cliente[0],
+                amount=int(float(request.data["amount"]) * 100),
+                currency="inr",
+                description='Servicios de desarrollo de software', 
+            )
+
+            # guardando la orden en la base de datos de Django
+            nueva_orden = OrderModel.objects.create(
+                name=data["name"],
+                card_number=data["card_number"],
+                address=data["address"],
+                ordered_item=data["ordered_item"],
+                paid_status=data["paid_status"],
+                paid_at=datetime.now(),
+                total_price=data["total_price"],
+                is_delivered=data["is_delivered"],
+                delivered_at=data["delivered_at"],
+                user=request.user
+            )
+
+            return Response(
+                data={
+                    "data": {
+                        "customer_id": cliente.id,
+                        "message": "Pago exitoso",
+                    }
+                }, status=status.HTTP_200_OK
+            )
+
+        except stripe.error.APIConnectionError:            
+            return Response({ 
+                "detail": "Error de red, no se pudo establecer una nueva conexión."}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
