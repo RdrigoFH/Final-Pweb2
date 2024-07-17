@@ -30,3 +30,14 @@ class BillingAddress(models.Model):
 
     def __str__(self):
         return self.name
+class OrderModel(models.Model):
+    name = models.CharField(max_length=120)
+    ordered_item = models.CharField(max_length=200, null=True, blank=True, default="Not Set")
+    card_number = models.CharField(max_length=16, null=True, blank=True)
+    address = models.CharField(max_length=300, null=True, blank=True)
+    paid_status = models.BooleanField(default=False)
+    paid_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    total_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    is_delivered = models.BooleanField(default=False)
+    delivered_at = models.CharField(max_length=200, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True) 
