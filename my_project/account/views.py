@@ -186,3 +186,15 @@ class UpdateUserAddressView(APIView):
                 return Response({"details": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
         except:
             return Response({"details": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class DeleteUserAddressView(APIView):
+    def delete(self, request, pk):
+        try:
+            user_address = BillingAddress.objects.get(id=pk)
+            if request.user.id == user_address.user.id:
+                user_address.delete()
+                return Response({"details": "Address successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({"details": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+        except:
+            return Response({"details": "Not found."}, status=status.HTTP_404_NOT_FOUND)
