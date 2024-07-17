@@ -1,4 +1,4 @@
-from .models import StripeModel, BillingAddress, OrderModel
+from .models import PayModel, BillingAddress, OrderModel
 from django.http import Http404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -21,6 +21,7 @@ from .serializers import (
 # Create your views here.
 class UserRegisterView(APIView):
     
+    #Vista que maneja el registro de usuarios
 
     def post(self, request, format=None):
         data = request.data
@@ -49,6 +50,8 @@ class UserRegisterView(APIView):
                 return Response(serializer.data)
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    # Se encarga de customizas la vista de obtención de tokens para incluir más detalles del usuario en la respuesta
     def validate(self, attrs):
         data = super().validate(attrs)
         serializer = UserRegisterTokenSerializer(self.user).data
@@ -60,14 +63,20 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class CardsListView(APIView):
+
+    # S encarga de listar todas las tarjetas asociadas al usuario actualmente autenticado
+
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        stripeCards = StripeModel.objects.filter(user=request.user)
-        serializer = CardsListSerializer(stripeCards, many=True)
+        cards = PayModel.objects.filter(user=request.user)
+        serializer = CardsListSerializer(cards, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class UserAccountDetailsView(APIView):
+
+    #Obtiene los detalles de la cuenta de un usurio específico.
+
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
@@ -79,6 +88,8 @@ class UserAccountDetailsView(APIView):
             return Response({"observación": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAccountUpdateView(APIView):
+
+    #Vista encargada de actualizar los detalles de la cuenta de un usuario específico.
     permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request, pk):
@@ -103,6 +114,8 @@ class UserAccountUpdateView(APIView):
             return Response({"observación": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAccountDeleteView(APIView):
+
+    #Lo q hace es eliminar la cuenta de un usuario.
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
@@ -122,6 +135,9 @@ class UserAccountDeleteView(APIView):
             return Response({"Observación": "Usuario no enocntrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAddressesListView(APIView):
+
+    #lista todas las direcciones de facturacion del usuario.
+
     def get(self, request):
         user = request.user
         user_address = BillingAddress.objects.filter(user=user)
@@ -129,12 +145,17 @@ class UserAddressesListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserAddressDetailsView(APIView):
+
+    #Obtiene los detalles de una dirección específica del usuario
+
     def get(self, request, pk):
         user_address = BillingAddress.objects.get(id=pk)
         serializer = BillingAddressSerializer(user_address, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CreateUserAddressView(APIView):
+
+    # se encarga de crear una nuva dirección de facturación para el usuario autenticado
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -158,6 +179,7 @@ class CreateUserAddressView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateUserAddressView(APIView):
+    #Actualiza una dirección del usuario
     permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request, pk):
@@ -188,6 +210,8 @@ class UpdateUserAddressView(APIView):
             return Response({"Observación": "No encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class DeleteUserAddressView(APIView):
+
+    #Se encargade eliminar una dirección del usuario
     def delete(self, request, pk):
         try:
             user_address = BillingAddress.objects.get(id=pk)
@@ -200,6 +224,7 @@ class DeleteUserAddressView(APIView):
             return Response({"Observación": "No encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 class OrdersListView(APIView):
+    #Lista todas las órdenes del usuario
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -215,6 +240,9 @@ class OrdersListView(APIView):
 
 
 class ChangeOrderStatus(APIView):
+
+    #Cambia el estado de entrega de una orden específica
+    
     permission_classes = [permissions.IsAdminUser]
 
     def put(self, request, pk):
