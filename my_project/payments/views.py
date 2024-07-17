@@ -238,3 +238,30 @@ class CardUpdateView(APIView):
                 "data": { "Updated Card": update_card },
 
             }, status=status.HTTP_200_OK)
+
+class DeleteCardView(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        obj_tarjeta = StripeModel.objects.get(card_number=request.data["card_number"])
+
+        id_cliente = obj_tarjeta.customer_id
+        id_tarjeta = obj_tarjeta.card_id
+
+        # eliminando la tarjeta de Stripe
+        stripe.Customer.delete_source(
+            id_cliente,
+            id_tarjeta
+        )
+
+        # eliminando la tarjeta de la base de datos de Django
+        obj_tarjeta.delete()
+
+        # eliminar el cliente
+        # al eliminar la tarjeta no cambiará el número de tarjeta predeterminado en Stripe, por lo tanto,
+        # necesitamos eliminar el cliente (con una nueva solicitud de tarjeta, el cliente será recreado)
+        stripe.Customer.delete(id_cliente)
+        
+        return Response("Tarjeta eliminada con éxito.", status=status.HTTP_200_OK)
