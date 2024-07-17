@@ -198,3 +198,19 @@ class DeleteUserAddressView(APIView):
                 return Response({"details": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
         except:
             return Response({"details": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class OrdersListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user_staff_status = request.user.is_staff
+        if user_staff_status:
+            all_users_orders = OrderModel.objects.all()
+            serializer = AllOrdersListSerializer(all_users_orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            all_orders = OrderModel.objects.filter(user=request.user)
+            serializer = AllOrdersListSerializer(all_orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
