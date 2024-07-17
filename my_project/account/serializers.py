@@ -1,4 +1,4 @@
-from .models import StripeModel, BillingAddress, OrderModel
+from .models import PayModel, BillingAddress, OrderModel
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -24,3 +24,10 @@ class UserRegisterTokenSerializer(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+class CardsListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PayModel
+        fields = "__all__"
+
