@@ -1,3 +1,49 @@
-from django.shortcuts import render
-
+from .models import StripeModel, BillingAddress, OrderModel
+from django.http import Http404
+from rest_framework import status
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password
+from rest_framework import authentication, permissions
+from rest_framework.decorators import permission_classes
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer 
+from rest_framework_simplejwt.views import TokenObtainPairView # for login page
+from django.contrib.auth.hashers import check_password
+from django.shortcuts import get_object_or_404
+from .serializers import (
+    UserSerializer, 
+    UserRegisterTokenSerializer, 
+    CardsListSerializer, 
+    BillingAddressSerializer,
+    AllOrdersListSerializer
+)
 # Create your views here.
+class UserRegisterView(APIView):
+    
+
+    def post(self, request, format=None):
+        data = request.data
+        username = data["username"]
+        email = data["email"]
+
+        if username == "" or email == "":
+            return Response({"detial": "username or email cannot be empty"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            check_username = User.objects.filter(username=username).count()
+            check_email =  User.objects.filter(email=email).count()
+
+            if check_username:
+                message = "A user with that username already exist!"
+                return Response({"detail": message}, status=status.HTTP_403_FORBIDDEN)
+            if check_email:
+                message = "A user with that email address already exist!"
+                return Response({"detail": message}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                user = User.objects.create(
+                    username=username,
+                    email=email,
+                    password=make_password(data["password"]),
+                )
+                serializer = UserRegisterTokenSerializer(user, many=False)
+                return Response(serializer.data)
