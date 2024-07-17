@@ -214,3 +214,15 @@ class OrdersListView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ChangeOrderStatus(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def put(self, request, pk):
+        data = request.data
+        order = OrderModel.objects.get(id=pk)
+        order.is_delivered = data["is_delivered"]
+        order.delivered_at = data["delivered_at"]
+        order.save()
+        
+        serializer = AllOrdersListSerializer(order, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
