@@ -51,3 +51,25 @@ class ProductDeleteView(APIView):
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
+class ProductEditView(APIView):
+    
+    permission_classes = [permissions.IsAdminUser]
+
+    def put(self, request, pk):
+        data = request.data
+        product = Product.objects.get(id=pk)
+        
+        updated_product = {
+            "name": data["name"] if data["name"] else product.name,
+            "description": data["description"] if data["description"] else product.description,
+            "price": data["price"] if data["price"] else product.price,
+            "stock": data["stock"],
+            "image": data["image"] if data["image"] else product.image,
+        }
+
+        serializer = ProductSerializer(product, data=updated_product)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
