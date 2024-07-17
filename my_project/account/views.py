@@ -101,3 +101,22 @@ class UserAccountUpdateView(APIView):
                 return Response({"details": "Permission Denied."}, status.status.HTTP_403_FORBIDDEN)
         else:
             return Response({"details": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class UserAccountDeleteView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+            data = request.data
+
+            if request.user.id == user.id:
+                if check_password(data["password"], user.password):
+                    user.delete()
+                    return Response({"details": "User successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
+                else:
+                    return Response({"details": "Incorrect password."}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response({"details": "Permission Denied."}, status=status.HTTP_403_FORBIDDEN)
+        except:
+            return Response({"details": "User not found."}, status=status.HTTP_404_NOT_FOUND)
