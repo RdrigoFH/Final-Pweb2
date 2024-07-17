@@ -28,17 +28,17 @@ class UserRegisterView(APIView):
         email = data["email"]
 
         if username == "" or email == "":
-            return Response({"detial": "username or email cannot be empty"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Observación": "nombre de usuario  o email no puede ser vacio"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             check_username = User.objects.filter(username=username).count()
             check_email =  User.objects.filter(email=email).count()
 
             if check_username:
-                message = "A user with that username already exist!"
-                return Response({"detail": message}, status=status.HTTP_403_FORBIDDEN)
+                message = "Ya existe un usuario con ese nombre!"
+                return Response({"Observación": message}, status=status.HTTP_403_FORBIDDEN)
             if check_email:
-                message = "A user with that email address already exist!"
-                return Response({"detail": message}, status=status.HTTP_403_FORBIDDEN)
+                message = "Ya existe un usuario con esa dirección!"
+                return Response({"Observación": message}, status=status.HTTP_403_FORBIDDEN)
             else:
                 user = User.objects.create(
                     username=username,
@@ -76,7 +76,7 @@ class UserAccountDetailsView(APIView):
             serializer = UserSerializer(user, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response({"details": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"observación": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAccountUpdateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -95,12 +95,12 @@ class UserAccountUpdateView(APIView):
 
                 user.save()
                 serializer = UserSerializer(user, many=False)
-                message = {"details": "User Successfully Updated.", "user": serializer.data}
+                message = {"observación": "User actualizado correctamente", "user": serializer.data}
                 return Response(message, status=status.HTTP_200_OK)
             else:
-                return Response({"details": "Permission Denied."}, status.status.HTTP_403_FORBIDDEN)
+                return Response({"observación": "Permiso denegado."}, status.status.HTTP_403_FORBIDDEN)
         else:
-            return Response({"details": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"observación": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAccountDeleteView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -113,13 +113,13 @@ class UserAccountDeleteView(APIView):
             if request.user.id == user.id:
                 if check_password(data["password"], user.password):
                     user.delete()
-                    return Response({"details": "User successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
+                    return Response({"details": "Usuario eliminado con exito."}, status=status.HTTP_204_NO_CONTENT)
                 else:
-                    return Response({"details": "Incorrect password."}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({"observación": "Contraseña incorrecta."}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({"details": "Permission Denied."}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"Observación": "Permiso denegado"}, status=status.HTTP_403_FORBIDDEN)
         except:
-            return Response({"details": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Observación": "Usuario no enocntrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class UserAddressesListView(APIView):
     def get(self, request):
@@ -183,9 +183,9 @@ class UpdateUserAddressView(APIView):
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"details": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"Observación": "Permiso negado"}, status=status.HTTP_403_FORBIDDEN)
         except:
-            return Response({"details": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Observación": "No encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class DeleteUserAddressView(APIView):
     def delete(self, request, pk):
@@ -193,11 +193,11 @@ class DeleteUserAddressView(APIView):
             user_address = BillingAddress.objects.get(id=pk)
             if request.user.id == user_address.user.id:
                 user_address.delete()
-                return Response({"details": "Address successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
+                return Response({"Observación": "Dirección eliminada correctamente"}, status=status.HTTP_204_NO_CONTENT)
             else:
-                return Response({"details": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"Observación": "Permisos denegados."}, status=status.HTTP_403_FORBIDDEN)
         except:
-            return Response({"details": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Observación": "No encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 class OrdersListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
