@@ -27,3 +27,9 @@ class TestStripeImplementation(APIView):
             receipt_email='yash@gmail.com'
         )
         return Response(data=test_payment_process, status=status.HTTP_200_OK)
+    
+class CheckTokenValidation(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        return Response("Token is Valid", status=status.HTTP_200_OK)
