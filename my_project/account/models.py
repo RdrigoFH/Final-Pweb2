@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
-class PayModel(models.Model):
+class StripeModel(models.Model):
     email = models.EmailField(null=True, blank=True)
     name_on_card = models.CharField(max_length=200, null=True, blank=True)
     customer_id = models.CharField(max_length=200, blank=True, null=True)

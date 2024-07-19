@@ -1,4 +1,4 @@
-from .models import PayModel, BillingAddress, OrderModel
+from .models import StripeModel, BillingAddress, OrderModel
 from django.http import Http404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -69,7 +69,7 @@ class CardsListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        cards = PayModel.objects.filter(user=request.user)
+        cards = StripeModel.objects.filter(user=request.user)
         serializer = CardsListSerializer(cards, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -242,7 +242,7 @@ class OrdersListView(APIView):
 class ChangeOrderStatus(APIView):
 
     #Cambia el estado de entrega de una orden específica
-    
+
     permission_classes = [permissions.IsAdminUser]
 
     def put(self, request, pk):
