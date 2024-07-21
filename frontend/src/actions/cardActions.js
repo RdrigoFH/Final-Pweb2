@@ -172,3 +172,40 @@ export const updateStripeCard = (cardData) => async (dispatch, getState) => {
         })
     }
 }
+
+export const deleteSavedCard = (card_number) => async (dispatch, getState) => {
+
+    try {
+        dispatch({
+            type: DELETE_SAVED_CARD_REQUEST,
+        })
+
+        const {
+            userLoginReducer: { userInfo }
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            '/payments/delete-card/',
+            { "card_number": card_number },
+            config
+        )
+
+        dispatch({
+            type: DELETE_SAVED_CARD_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_SAVED_CARD_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
