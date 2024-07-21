@@ -332,3 +332,112 @@ export const getSingleAddress = (id) => async (dispatch, getState) => {
        })
    }
 }
+export const createUserAddress = (addressData) => async (dispatch, getState) => {
+
+   try {
+       dispatch({
+           type: CREATE_USER_ADDRESS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.post(
+           "/account/create-address/",
+           addressData,
+           config
+       )
+
+       dispatch({
+           type: CREATE_USER_ADDRESS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: CREATE_USER_ADDRESS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
+
+
+export const updateUserAddress = (id, addressData) => async (dispatch, getState) => {
+   try {
+       dispatch({
+           type: UPDATE_USER_ADDRESS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.put(
+           `/account/update-address/${id}/`,
+           addressData,
+           config
+       )
+
+       dispatch({
+           type: UPDATE_USER_ADDRESS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: UPDATE_USER_ADDRESS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
+
+
+export const deleteUserAddress = (id) => async (dispatch, getState) => {
+   try {
+       dispatch({
+           type: DELETE_USER_ADDRESS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.delete(
+           `/account/delete-address/${id}/`,
+           config
+       )
+
+       dispatch({
+           type: DELETE_USER_ADDRESS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: DELETE_USER_ADDRESS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
