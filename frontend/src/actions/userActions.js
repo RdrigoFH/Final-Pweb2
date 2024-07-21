@@ -441,3 +441,38 @@ export const deleteUserAddress = (id) => async (dispatch, getState) => {
        })
    }
 }
+
+export const getAllOrders = () => async (dispatch, getState) => {
+   try {
+       dispatch({
+           type: GET_ALL_ORDERS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.get(
+           `/account/all-orders-list/`,
+           config
+       )
+
+       dispatch({
+           type: GET_ALL_ORDERS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: GET_ALL_ORDERS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
