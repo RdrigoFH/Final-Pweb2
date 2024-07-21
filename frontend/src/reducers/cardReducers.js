@@ -23,3 +23,42 @@ import {
     DELETE_SAVED_CARD_FAIL,
 
 } from '../constants/index'
+
+export const createCardReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CARD_CREATE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                cardData: {},
+                success: false,
+                error: ""
+            }
+        case CARD_CREATE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                cardData: action.payload,
+                error: ""
+            }
+        case CARD_CREATE_FAIL:
+            return {
+                ...state,
+                loading: false,
+                cardData: {},
+                success: false,
+                error: action.payload
+            }
+        case CARD_CREATE_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                cardData: {},
+                error: "",
+            }
+        default:
+            return state
+    }
+}
