@@ -134,3 +134,41 @@ export const savedCardsList = () => async (dispatch, getState) => {
         })
     }
 }
+
+export const updateStripeCard = (cardData) => async (dispatch, getState) => {
+
+    try {
+
+        dispatch({
+            type: UPDATE_STRIPE_CARD_REQUEST
+        })
+
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            "/payments/update-card/",
+            cardData,
+            config
+        )
+
+        dispatch({
+            type: UPDATE_STRIPE_CARD_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: UPDATE_STRIPE_CARD_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
