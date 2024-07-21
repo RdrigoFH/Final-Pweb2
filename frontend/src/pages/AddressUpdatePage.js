@@ -19,19 +19,15 @@ const AddressUpdatePage = ({ match }) => {
     const [city, setCity] = useState("")
     const [state, setState] = useState("")
 
-    // login reducer
     const userLoginReducer = useSelector(state => state.userLoginReducer)
     const { userInfo } = userLoginReducer
 
-    // check token validation reducer
     const checkTokenValidationReducer = useSelector(state => state.checkTokenValidationReducer)
     const { error: tokenError } = checkTokenValidationReducer
-
-    // get single address reducer    
+  
     const getSingleAddressReducer = useSelector(state => state.getSingleAddressReducer)
     const { address, error: errorFetchingAddress } = getSingleAddressReducer
-
-    // get single address reducer    
+    
     const updateUserAddressReducer = useSelector(state => state.updateUserAddressReducer)
     const { success: addressUpdateSuccess } = updateUserAddressReducer
 
@@ -44,7 +40,6 @@ const AddressUpdatePage = ({ match }) => {
         }
     }, [dispatch, history, userInfo, match])
 
-    // token validation check
     if (userInfo && tokenError === "Request failed with status code 401") {
         alert("Session expired, please login again.")
         dispatch(logout())
