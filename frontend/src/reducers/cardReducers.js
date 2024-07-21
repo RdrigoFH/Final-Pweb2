@@ -159,4 +159,30 @@ export const updateStripeCardReducer = (state = {}, action) => {
             return state
     }
 }
+export const deleteSavedCardReducer = (state = {data: {}}, action) => {
+    switch (action.type) {
+        case DELETE_SAVED_CARD_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: ""
+            }
+        case DELETE_SAVED_CARD_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                data: action.payload,
+                error: ""
+            }
+        case DELETE_SAVED_CARD_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
 
