@@ -171,3 +171,37 @@ export const updateProduct = (id, product) => async (dispatch, getState) => {
         })
     }
 }
+export const changeDeliveryStatus = (id, product) => async (dispatch, getState) => {
+
+    try {
+        dispatch({
+            type: CHANGE_DELIVERY_STATUS_REQUEST
+        })
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.put(
+            `/account/change-order-status/${id}/`,
+            product,
+            config
+        )
+
+        dispatch({
+            type: CHANGE_DELIVERY_STATUS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: CHANGE_DELIVERY_STATUS_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
