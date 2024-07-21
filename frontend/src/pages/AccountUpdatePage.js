@@ -16,7 +16,7 @@ function AccountUpdatePage() {
 
     const userDetailsReducer = useSelector(state => state.userDetailsReducer)
     const { user: userAccDetails, loading } = userDetailsReducer
-    
+
     const userDetailsUpdateReducer = useSelector(state => state.userDetailsUpdateReducer)
     const { success } = userDetailsUpdateReducer
 
@@ -33,7 +33,39 @@ function AccountUpdatePage() {
         dispatch(logout())
         history.push("/login")
         window.location.reload()
-      }
+    }
+   
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const updatedUsername = username === "" ? userAccDetails.username : username
+        const updatedEmail = email === "" ? userAccDetails.email : email
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match")
+        } else {
+            const userData = {
+                'username': updatedUsername,
+                'email': updatedEmail,
+                'password': password,
+            }
+            dispatch(userUpdateDetails(userData))
+        }
+    }
+
+    // logout
+    const logoutHandler = () => {
+        history.push("/login")
+        dispatch(logout()) // action        
+    }
+
+    if(success) {
+        alert("Account successfully updated.")
+        dispatch({
+            type: UPDATE_USER_DETAILS_RESET
+        })
+        history.push("/account/")
+        dispatch(userDetails(userInfo.id))
+    }    
 }
 
 export default AccountUpdatePage
