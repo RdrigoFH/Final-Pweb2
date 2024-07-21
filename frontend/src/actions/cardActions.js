@@ -67,3 +67,38 @@ export const createCard = (cardData) => async (dispatch, getState) => {
         })
     }
 }
+
+export const chargeCustomer = (cardData) => async (dispatch, getState) => {
+
+    try {
+        dispatch({
+            type: CHARGE_CARD_REQUEST
+        })
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.post(
+            "/payments/charge-customer/",
+            cardData,
+            config
+        )
+
+        dispatch({
+            type: CHARGE_CARD_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: CHARGE_CARD_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
