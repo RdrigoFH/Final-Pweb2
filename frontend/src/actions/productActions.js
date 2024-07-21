@@ -66,3 +66,38 @@ export const getProductDetails = (id) => async (dispatch) => {
         })
     }
 }
+export const createProduct = (product) => async (dispatch, getState) => {
+
+    try {
+        dispatch({
+            type: CREATE_PRODUCT_REQUEST
+        })
+
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            "/api/product-create/",
+            product,
+            config
+        )
+
+        dispatch({
+            type: CREATE_PRODUCT_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: CREATE_PRODUCT_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
