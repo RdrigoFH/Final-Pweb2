@@ -125,4 +125,38 @@ export const savedCardsListReducer = (state = {stripeCards: []}, action) => {
             return state
     }
 }
+export const updateStripeCardReducer = (state = {}, action) => {
+    switch (action.type) {
+        case UPDATE_STRIPE_CARD_REQUEST:
+            return {
+                loading: true,
+                success: false,
+                stripeCard: {},
+                error: "",
+            }
+        case UPDATE_STRIPE_CARD_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                stripeCard: action.payload,
+                error: "",
+            }
+        case UPDATE_STRIPE_CARD_FAIL:
+            return {
+                loading: false,
+                success: false,
+                stripeCard: {},
+                error: action.payload
+            }
+        case UPDATE_STRIPE_CARD_RESET:
+            return {
+                loading: false,
+                success: false,
+                stripeCard: {},
+                error: ""
+            }
+        default:
+            return state
+    }
+}
 
