@@ -10,8 +10,7 @@ import {useHistory} from 'react-router-dom'
 
 
 function AccountPage() {
-
-
+    
     let history = useHistory()
     const dispatch = useDispatch()
 
@@ -40,9 +39,8 @@ function AccountPage() {
         }
     }, [history, userInfo, dispatch])
 
-    // logout
     const logoutHandler = () => {
-        dispatch(logout()) // action
+        dispatch(logout()) 
     }
 
     if (userInfo && tokenError === "Request failed with status code 401") {
