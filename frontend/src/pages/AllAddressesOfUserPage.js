@@ -60,23 +60,19 @@ function AllAddressesOfUserPage() {
         dispatch(getAllAddress())
     }
 
-    // address deletion handler
     const deleteAddressHandler = (address) => {
         setDeleteAddress(address)
         handleShow()
     }
 
-    // address delete confirmation
     const confirmDelete = (id) => {
         dispatch(deleteUserAddress(id))
         handleClose()
     }
 
-    // toggle Create Address Button
     const toggleCreateAddress = () => {
         setCreateAddress(!createAddress)
     }
-
 
     return (
         <div>
