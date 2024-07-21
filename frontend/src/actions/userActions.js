@@ -184,3 +184,44 @@ export const userDetails = (id) => async (dispatch, getState) => {
        })
    }
 }
+
+export const userUpdateDetails = (userData) => async (dispatch, getState) => {
+
+   try {
+
+       dispatch({
+           type: UPDATE_USER_DETAILS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+       const { data } = await axios.put(
+           `/account/user_update/${userInfo.id}/`,
+           {
+               "username": userData.username,
+               "email": userData.email,
+               "password": userData.password
+           },
+           config
+       )
+
+       dispatch({
+           type: UPDATE_USER_DETAILS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: UPDATE_USER_DETAILS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
