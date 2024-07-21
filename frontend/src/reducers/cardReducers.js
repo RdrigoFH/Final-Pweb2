@@ -61,4 +61,40 @@ export const createCardReducer = (state = {}, action) => {
         default:
             return state
     }
+    
 }
+export const chargeCardReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CHARGE_CARD_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case CHARGE_CARD_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case CHARGE_CARD_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case CHARGE_CARD_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
+
