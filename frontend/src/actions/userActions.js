@@ -264,3 +264,71 @@ export const userAccountDelete = (userData) => async (dispatch, getState) => {
        })
    }
 }
+export const getAllAddress = () => async (dispatch, getState) => {
+   try {
+       dispatch({
+           type: GET_USER_ALL_ADDRESSES_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.get(
+           "/account/all-address-details/",
+           config
+       )
+
+       dispatch({
+           type: GET_USER_ALL_ADDRESSES_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: GET_USER_ALL_ADDRESSES_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
+export const getSingleAddress = (id) => async (dispatch, getState) => {
+   try {
+       dispatch({
+           type: GET_SINGLE_ADDRESS_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+
+       const { data } = await axios.get(
+           `/account/address-details/${id}/`,
+           config
+       )
+
+       dispatch({
+           type: GET_SINGLE_ADDRESS_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: GET_SINGLE_ADDRESS_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
