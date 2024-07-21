@@ -225,3 +225,42 @@ export const userUpdateDetails = (userData) => async (dispatch, getState) => {
        })
    }
 }
+
+export const userAccountDelete = (userData) => async (dispatch, getState) => {
+
+   try {
+
+       dispatch({
+           type: DELETE_USER_ACCOUNT_REQUEST
+       })
+
+       const {
+           userLoginReducer: { userInfo }
+       } = getState()
+
+       const config = {
+           headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${userInfo.token}`
+           }
+       }
+       const { data } = await axios.post(
+           `/account/user_delete/${userData.id}/`,
+           {
+               "password": userData.password
+           },
+           config
+       )
+
+       dispatch({
+           type: DELETE_USER_ACCOUNT_SUCCESS,
+           payload: data
+       })
+
+   } catch (error) {
+       dispatch({
+           type: DELETE_USER_ACCOUNT_FAIL,
+           payload: error.response && error.response.data.details ? error.response.data.details : error.message
+       })
+   }
+}
