@@ -174,7 +174,6 @@ export const updateStripeCard = (cardData) => async (dispatch, getState) => {
 }
 
 export const deleteSavedCard = (card_number) => async (dispatch, getState) => {
-
     try {
         dispatch({
             type: DELETE_SAVED_CARD_REQUEST,
