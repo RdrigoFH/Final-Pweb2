@@ -102,3 +102,35 @@ export const chargeCustomer = (cardData) => async (dispatch, getState) => {
         })
     }
 }
+export const savedCardsList = () => async (dispatch, getState) => {
+
+    try {
+        dispatch({
+            type: SAVED_CARDS_LIST_REQUEST,
+        })
+
+        const {
+            userLoginReducer: { userInfo }
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get('/account/stripe-cards/', config)
+
+        dispatch({
+            type: SAVED_CARDS_LIST_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: SAVED_CARDS_LIST_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
