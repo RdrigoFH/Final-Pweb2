@@ -1,3 +1,13 @@
+import React, { useState, useEffect } from 'react'
+import { Row, Col, Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { userDetails, userUpdateDetails, checkTokenValidation, logout } from '../actions/userActions'
+import Message from '../components/Message'
+import { Spinner } from 'react-bootstrap'
+import {useHistory} from 'react-router-dom'
+import { UPDATE_USER_DETAILS_RESET } from '../constants'
+
 function AccountUpdatePage() {
 
     let history = useHistory()
@@ -149,7 +159,7 @@ function AccountUpdatePage() {
             > Login</Link> page.</Message>
         }
     }
-    return  renderData()
+    return  renderData()    
 }
 
 export default AccountUpdatePage
