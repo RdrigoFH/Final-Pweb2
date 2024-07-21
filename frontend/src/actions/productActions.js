@@ -101,3 +101,39 @@ export const createProduct = (product) => async (dispatch, getState) => {
         })
     }
 }
+export const deleteProduct = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: DELETE_PRODUCT_REQUEST
+        })
+
+        // login reducer
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        // api call
+        const { data } = await axios.delete(
+            `/api/product-delete/${id}/`,
+            config
+        )
+
+        dispatch({
+            type: DELETE_PRODUCT_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_PRODUCT_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
