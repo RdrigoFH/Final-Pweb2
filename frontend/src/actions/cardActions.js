@@ -22,3 +22,48 @@ import {
 } from '../constants/index'
 
 import axios from 'axios'
+
+export const createCard = (cardData) => async (dispatch, getState) => {
+
+    try {
+
+        dispatch({
+            type: CARD_CREATE_REQUEST
+        })
+
+        const {
+            userLoginReducer: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+                "Card-Number": cardData.cardNumber,
+            }
+        }
+        const { data } = await axios.post(
+            "/payments/create-card/",
+            {
+                'email': cardData.email,
+                'number': cardData.cardNumber,
+                'exp_month': cardData.expMonth,
+                'exp_year': cardData.expYear,
+                'cvc': cardData.cvc,
+                'save_card': cardData.saveCard
+            },
+            config
+        )
+
+        dispatch({
+            type: CARD_CREATE_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: CARD_CREATE_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
