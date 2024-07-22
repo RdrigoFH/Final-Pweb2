@@ -303,3 +303,42 @@ export const getSingleAddressReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const createUserAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case CREATE_USER_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                address: {},
+                success: false,
+                error: ""
+            }
+        case CREATE_USER_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                address: action.payload,
+                success: true,
+                error: ""
+            }
+        case CREATE_USER_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                address: {},
+                error: action.payload
+            }
+        case CREATE_USER_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                address: {},
+                error: ""
+            }
+        default:
+            return state
+    }
+}
