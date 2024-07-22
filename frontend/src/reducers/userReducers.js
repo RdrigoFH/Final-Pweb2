@@ -233,3 +233,34 @@ export const checkTokenValidationReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const getAllAddressesOfUserReducer = (state = {}, action) => {
+    switch(action.type) {
+        case GET_USER_ALL_ADDRESSES_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                addresses: [],
+                success: false,
+                error: ""
+            }
+        case GET_USER_ALL_ADDRESSES_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                addresses: action.payload,
+                success: true,
+                error: ""
+            }
+        case GET_USER_ALL_ADDRESSES_FAIL:
+            return {
+                ...state,
+                loading: false,
+                addresses: [],
+                success: false,
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
