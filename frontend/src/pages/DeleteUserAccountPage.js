@@ -39,6 +39,37 @@ function DeleteUserAccount() {
         history.push("/login")
         window.location.reload()
     }
+
+    return (
+        <div>
+            <Row className='justify-content-md-center'>
+                <Col xs={12} md={6}>
+                    <h3>Confirm your password to delete your account.</h3>
+                    {loading && <span style = {{ display: "flex" }}><h5>Please wait</h5><span className = "ml-2"><Spinner animation="border" /></span></span>}                    
+                    {error && <Message variant='danger'>Incorrect Password!</Message>}        
+                    <div className="mt-4">
+                        <Form onSubmit={onSubmit}>
+                            <Form.Group controlId='password'>
+                                <Form.Label>
+                                    Password
+                            </Form.Label>
+                                <Form.Control
+                                    required
+                                    type="password"
+                                    placeholder="enter your password"
+                                    value={myPassword}
+                                    onChange={(e) => setMyPassword(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Button type="submit" variant="danger">Confirm Delete</Button>
+                        </Form>
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    )
 }
 
 export default DeleteUserAccount
