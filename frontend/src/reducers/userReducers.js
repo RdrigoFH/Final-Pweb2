@@ -377,3 +377,38 @@ export const updateUserAddressReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const deleteUserAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case DELETE_USER_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case DELETE_USER_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case DELETE_USER_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case DELETE_USER_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
