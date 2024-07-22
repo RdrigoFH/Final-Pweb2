@@ -22,3 +22,29 @@ import {
     CHANGE_DELIVERY_STATUS_FAIL,
     CHANGE_DELIVERY_STATUS_RESET,
 } from '../constants/index'
+export const productsListReducer = (state = { products: [] }, action) => {
+    switch (action.type) {
+        case PRODUCTS_LIST_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                products: [],
+                error: ""
+            }
+        case PRODUCTS_LIST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                products: action.payload,
+                error: ""
+            }
+        case PRODUCTS_LIST_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
