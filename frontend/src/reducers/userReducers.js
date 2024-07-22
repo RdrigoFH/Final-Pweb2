@@ -163,3 +163,38 @@ export const userDetailsUpdateReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const deleteUserAccountReducer = (state = {}, action) => {
+    switch(action.type) {
+        case DELETE_USER_ACCOUNT_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case DELETE_USER_ACCOUNT_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case DELETE_USER_ACCOUNT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case DELETE_USER_ACCOUNT_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
