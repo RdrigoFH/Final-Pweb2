@@ -264,3 +264,42 @@ export const getAllAddressesOfUserReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const getSingleAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case GET_SINGLE_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                address: {},
+                success: false,
+                error: ""
+            }
+        case GET_SINGLE_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                address: action.payload,
+                success: true,
+                error: ""
+            }
+        case GET_SINGLE_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                address: {},
+                success: false,
+                error: action.payload
+            }
+        case GET_SINGLE_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                address: {},
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
