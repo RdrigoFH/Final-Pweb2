@@ -188,3 +188,38 @@ export const deleteProductReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const changeDeliveryStatusReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CHANGE_DELIVERY_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case CHANGE_DELIVERY_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case CHANGE_DELIVERY_STATUS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case CHANGE_DELIVERY_STATUS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
