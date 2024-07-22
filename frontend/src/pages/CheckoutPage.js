@@ -61,6 +61,79 @@ const CheckoutPage = ({ match }) => {
         history.push("/login")
         window.location.reload()
       }
+
+    return (
+        <div>
+            {cardCreationError ? <Message variant='danger'>{cardCreationError}</Message> : ""}
+            {loading
+                &&
+                <span style={{ display: "flex" }}>
+                    <h5>Getting Checkout Info</h5>
+                    <span className="ml-2">
+                        <Spinner animation="border" />
+                    </span>
+                </span>}
+            {!loading && cardCreationLoading ?
+                <span style={{ display: "flex" }}>
+                    <h5>Checking your card</h5>
+                    <span className="ml-2">
+                        <Spinner animation="border" />
+                    </span>
+                </span> : ""}
+            {error ? <Message variant='danger'>{error}</Message> :
+                <Container>
+                    <Row>
+                        <Col xs={6}>
+                            <h3>Checkout Summary</h3>
+                            <Card className="mb-4">
+                                <Card.Body>
+                                    <Container>
+                                        <Row>
+                                            <Col>
+                                                <Image src={product.image} alt="image" height="180" />
+                                            </Col>
+                                            <Col>
+                                                <h5 className="card-title text-capitalize">
+                                                    {product.name}
+                                                </h5>
+                                                <span className="card-text text-success">₹ {product.price}</span>
+                                            </Col>
+                                        </Row>
+                                    </Container>
+                                </Card.Body>
+                            </Card>
+
+                            <span style={{ display: "flex" }}>
+                                <h3>Billing Address</h3>
+                                <Link
+                                    className="ml-2 mt-2"
+                                    to="/all-addresses/"
+                                >
+                                    Edit/Add Address
+                                </Link>
+                            </span>
+                            <UserAddressComponent handleAddressId={handleAddressId} />
+                        </Col>
+                        <Col xs={6}>
+                            <h3>
+                                Payments Section
+                            </h3>
+                            {success ?
+                                <ChargeCardComponent
+                                    selectedAddressId={selectedAddressId}
+                                    addressSelected={addressSelected}
+                                    product={product}
+                                />
+                                :
+                                <CreateCardComponent
+                                    addressSelected={addressSelected}
+                                    stripeCards={stripeCards} />}
+                        </Col>
+                    </Row>
+                </Container>
+            }
+        </div>
+    )
 }
 
 export default CheckoutPage
