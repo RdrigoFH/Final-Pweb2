@@ -198,3 +198,38 @@ export const deleteUserAccountReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const checkTokenValidationReducer = (state = {}, action) => {
+    switch(action.type) {
+        case CHECK_TOKEN_VALID_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                valid: false,
+                error: ""
+            }
+        case CHECK_TOKEN_VALID_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                valid: true,
+                error: ""
+            }
+        case CHECK_TOKEN_VALID_FAIL:
+            return {
+                ...state,
+                loading: false,
+                valid: false,
+                error: action.payload
+            }
+        case CHECK_TOKEN_VALID_RESET:
+            return {
+                ...state,
+                loading: false,
+                valid: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
