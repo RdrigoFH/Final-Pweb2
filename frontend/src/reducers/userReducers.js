@@ -124,3 +124,42 @@ export const userDetailsReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const userDetailsUpdateReducer = (state = {}, action) => {
+    switch(action.type) {
+        case UPDATE_USER_DETAILS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                user: {},
+                success: false,
+                error: ""
+            }
+        case UPDATE_USER_DETAILS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                user: action.payload,
+                error: ""
+            }
+        case UPDATE_USER_DETAILS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                user: {},
+                error: action.payload
+            }
+        case UPDATE_USER_DETAILS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                user: {},
+                error: ""
+            }
+        default:
+            return state
+    }
+}
