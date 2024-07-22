@@ -96,3 +96,31 @@ export const userRegisterReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const userDetailsReducer = (state = {}, action) => {
+    switch(action.type) {
+        case USER_DETAILS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                user: {},
+                error: ""
+            }
+        case USER_DETAILS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                user: action.payload,
+                error: ""
+            }
+        case USER_DETAILS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                user: {},
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
