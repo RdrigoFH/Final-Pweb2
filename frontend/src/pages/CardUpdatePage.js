@@ -86,7 +86,148 @@ const CardUpdatePage = () => {
         dispatch({
             type: UPDATE_STRIPE_CARD_RESET
         })
-    }  
+    }
+
+    return (
+        <div>
+            <Row className='justify-content-md-center'>
+                <Col xs={12} md={6}>
+                    <span
+                        className="d-flex justify-content-center"
+                        style={{ display: "flex", marginBottom: "15px", color: "#008080" }}>
+                        <em>Update Card Details</em>
+                    </span>
+                    {loading && <Spinner animation="border" />}
+                    {stripeCards.map((each, idx) => (
+                        <div key={idx}>
+                            <Card
+                                className="p-4 mb-4"
+                                style={{ border: "1px solid", borderColor: "#C6ACE7" }}
+                            >
+                                <Form onSubmit={onSubmit}>
+
+                                    <Form.Group controlId='name'>
+                                        <Form.Label>
+                                            Name on Card
+                                        </Form.Label>
+                                        <Form.Control
+                                            autoFocus={true}
+                                            type="text"
+                                            defaultValue={each.name_on_card}
+                                            placeholder="full name"
+                                            onChange={(e) => setName(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='month'>
+                                        <Form.Label>
+                                            Exp Month
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            pattern="[0-9]+"
+                                            maxLength="2"
+                                            defaultValue={each.exp_month}
+                                            placeholder="exp month"
+                                            onChange={(e) => setExpMonth(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='year'>
+                                        <Form.Label>
+                                            Exp Year
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            pattern="[0-9]+"
+                                            defaultValue={each.exp_year}
+                                            placeholder="exp year"
+                                            maxLength="4"
+                                            onChange={(e) => setExpYear(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='city'>
+                                        <Form.Label>
+                                            Address City
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={each.address_city}
+                                            placeholder="address city"
+                                            onChange={(e) => setAddressCity(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='country'>
+                                        <Form.Label>
+                                            Address Country
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={each.address_country}
+                                            placeholder="address country"
+                                            onChange={(e) => setAddressCountry(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='state'>
+                                        <Form.Label>
+                                            Address State
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={each.address_state}
+                                            placeholder="address state"
+                                            onChange={(e) => setAddressState(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group controlId='zip'>
+                                        <Form.Label>
+                                            Address Zip
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={each.address_zip}
+                                            placeholder="address zip"
+                                            pattern="[0-9]+"
+                                            maxLength="6"
+                                            onChange={(e) => setAddressZip(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Button
+                                        type="submit"
+                                        variant='success'
+                                        onClick={() => setCustomerAndCardIds(each.customer_id, each.card_id, each.card_number)}
+                                        style={{ width: "100%" }}
+                                        className="btn-sm button-focus-css">
+                                        Save Changes
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        variant='primary'
+                                        onClick={() => history.push("/stripe-card-details/")}
+                                        style={{ width: "100%" }}
+                                        className="btn-sm mt-2 button-focus-css">
+                                        Cancel
+                                    </Button>
+                                </Form>
+                            </Card>
+                        </div>
+                    ))}
+                </Col>
+            </Row>
+        </div>
+    )
 }
 
 export default CardUpdatePage
