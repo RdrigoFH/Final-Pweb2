@@ -62,6 +62,111 @@ const ProductCreatePage = () => {
         history.push("/login")
         window.location.reload()
     }
+
+    return (
+        <div>
+            {productCreationError && <Message variant='danger'>{productCreationError.image[0]}</Message>}
+            <span
+                className="d-flex justify-content-center text-info"
+                >
+                <em>New Product</em>
+            </span>
+            <Form onSubmit={onSubmit}>
+
+                <Form.Group controlId='name'>
+                    <Form.Label>
+                        <b>
+                            Product Name
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        required
+                        autoFocus={true}
+                        type="text"
+                        value={name}
+                        placeholder="product name"
+                        onChange={(e) => setName(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='description'>
+                    <Form.Label>
+                        <b>
+                            Product Description
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        required
+                        type="text"
+                        value={description}
+                        placeholder="product description"
+                        onChange={(e) => setDescription(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='price'>
+                    <Form.Label>
+                        <b>
+                            Price
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        required
+                        type="text"
+                        pattern="[0-9]+(\.[0-9]{1,2})?%?"
+                        value={price}
+                        placeholder="199.99"
+                        step="0.01"
+                        maxLength="8"
+                        onChange={(e) => setPrice(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <span style={{ display: "flex" }}>
+                    <label>In Stock</label>
+                    <input
+                        type="checkbox"
+                        value={stock}
+                        className="ml-2 mt-2"
+                        onChange={() => setStock(!stock)}
+                    />
+                </span>
+
+                <Form.Group controlId='image'>
+                    <Form.Label>
+                        <b>
+                            Product Image
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        required
+                        type="file"
+                        onChange={(e) => setImage(e.target.files[0])}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <Button
+                    type="submit"
+                    variant='success'
+                    className="btn-sm button-focus-css"
+                >
+                    Save Product
+                </Button>
+                <Button
+                    type="submit"
+                    variant='primary'
+                    className="btn-sm ml-2 button-focus-css"
+                    onClick={() => history.push("/")}
+                >
+                    Cancel
+                </Button>
+            </Form>
+        </div>
+    )
 }
 
 export default ProductCreatePage
