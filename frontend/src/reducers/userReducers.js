@@ -264,3 +264,179 @@ export const getAllAddressesOfUserReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const getSingleAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case GET_SINGLE_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                address: {},
+                success: false,
+                error: ""
+            }
+        case GET_SINGLE_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                address: action.payload,
+                success: true,
+                error: ""
+            }
+        case GET_SINGLE_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                address: {},
+                success: false,
+                error: action.payload
+            }
+        case GET_SINGLE_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                address: {},
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
+
+export const createUserAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case CREATE_USER_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                address: {},
+                success: false,
+                error: ""
+            }
+        case CREATE_USER_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                address: action.payload,
+                success: true,
+                error: ""
+            }
+        case CREATE_USER_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                address: {},
+                error: action.payload
+            }
+        case CREATE_USER_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                address: {},
+                error: ""
+            }
+        default:
+            return state
+    }
+}
+
+export const updateUserAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case UPDATE_USER_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case UPDATE_USER_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case UPDATE_USER_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case UPDATE_USER_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
+
+export const deleteUserAddressReducer = (state = {}, action) => {
+    switch(action.type) {
+        case DELETE_USER_ADDRESS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                success: false,
+                error: ""
+            }
+        case DELETE_USER_ADDRESS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                error: ""
+            }
+        case DELETE_USER_ADDRESS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: action.payload
+            }
+        case DELETE_USER_ADDRESS_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                error: ""
+            }
+        default:
+            return state
+    }
+}
+
+export const getAllOrdersReducer = (state = {orders: []}, action) => {
+    switch(action.type) {
+        case GET_ALL_ORDERS_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                orders: [],
+                error: ""
+            }
+        case GET_ALL_ORDERS_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                orders: action.payload,
+                error: ""
+            }
+        case GET_ALL_ORDERS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                orders: [],
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}
