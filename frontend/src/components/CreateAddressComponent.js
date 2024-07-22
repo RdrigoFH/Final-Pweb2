@@ -17,8 +17,7 @@ const CreateAddressComponent = ({ toggleCreateAddress }) => {
     const [landmark, setLandmark] = useState("")
     const [city, setCity] = useState("")
     const [state, setState] = useState("")
-
-    // Create User Address Reducer
+    
     const createUserAddressReducer = useSelector(state => state.createUserAddressReducer)
     const { success: addressCreationSuccess, error: errorCreatingAddress } = createUserAddressReducer
 
