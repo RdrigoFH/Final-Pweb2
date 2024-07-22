@@ -82,6 +82,153 @@ const ProductUpdatePage = ({ match }) => {
         history.push("/login")
         window.location.reload()
     }
+
+    return (
+        <div>
+            <span
+                className="d-flex justify-content-center text-info"
+            >
+                <em>Edit Product</em>
+            </span>
+            {productUpdationError ? (
+                <div>
+                    {scrollToTop()}
+                    <Message variant='danger'>{productUpdationError.image[0]}</Message>
+                </div>
+            ) : ""}
+            {loadingPageDetails && <span style={{ display: "flex" }}>
+                <h5>Getting Product Details</h5>
+                <span className="ml-2">
+                    <Spinner animation="border" />
+                </span>
+            </span>}
+            {loadingProductUpdations ? <span style={{ display: "flex" }}>
+                <h5>Updating Product</h5>
+                <span className="ml-2">
+                    <Spinner animation="border" />
+                </span>
+            </span> : ""}
+            <Form onSubmit={onSubmit}>
+
+                <Form.Group controlId='image'>
+                    <Form.Label>
+                        <b>
+                            Product Image
+                        </b>
+                    </Form.Label>
+                    <p>
+                        <img src={product.image} alt={product.name} height="200" />
+                    </p>
+
+                    {newImage ?
+                        <div>
+                            <Form.Control
+                                type="file"
+                                onChange={(e) => setImage(e.target.files[0])}
+                            >
+                            </Form.Control>
+
+                            <span
+                                onClick={() => {
+                                    setNewImage(!newImage)
+                                    setImage("")
+                                    dispatch({
+                                        type: UPDATE_PRODUCT_RESET
+                                    })
+                                }}
+                                className="btn btn-primary btn-sm mt-2"
+                            >
+                                Cancel
+                            </span>
+                        </div>
+                        :
+                        <p>
+                            <span
+                                onClick={() => setNewImage(!newImage)}
+                                className="btn btn-success btn-sm"
+                            >
+                                choose different image
+                            </span>
+                        </p>
+                    }
+                </Form.Group>
+
+                <Form.Group controlId='name'>
+                    <Form.Label>
+                        <b>
+                            Product Name
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        autoFocus={true}
+                        type="text"
+                        defaultValue={product.name}
+                        placeholder="product name"
+                        onChange={(e) => setName(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='description'>
+                    <Form.Label>
+                        <b>
+                            Product Description
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        type="text"
+                        defaultValue={product.description}
+                        placeholder="product description"
+                        onChange={(e) => setDescription(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='price'>
+                    <Form.Label>
+                        <b>
+                            Price
+                        </b>
+                    </Form.Label>
+                    <Form.Control
+                        type="text"
+                        pattern="[0-9]+(\.[0-9]{1,2})?%?"
+                        defaultValue={product.price}
+                        placeholder="199.99"
+                        step="0.01"
+                        maxLength="8"
+                        onChange={(e) => setPrice(e.target.value)}
+                    >
+                    </Form.Control>
+                </Form.Group>
+
+                <span style={{ display: "flex" }}>
+                    <label>In Stock</label>
+                    <input
+                        type="checkbox"
+                        defaultChecked={product.stock}
+                        className="ml-2 mt-2"
+                        onChange={() => setStock(!stock)}
+                    />
+                </span>
+
+                <Button
+                    type="submit"
+                    variant='success'
+                    className="btn-sm button-focus-css mb-4"
+                >
+                    Save Changes
+                </Button>
+                <Button
+                    onClick={() => history.push(`/product/${product.id}`)}
+                    variant='primary'
+                    className="btn-sm ml-2 button-focus-css mb-4"
+                >
+                    Cancel
+                </Button>
+            </Form>
+        </div>
+    )
 }
 
 export default ProductUpdatePage
